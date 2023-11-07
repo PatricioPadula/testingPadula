@@ -1,0 +1,128 @@
+paths:
+  /api/products:
+    get:
+      summary: Endpoint para obtener todos los productos
+      tags:
+        - Productos
+      responses:
+        "200":
+          description: Se obtuvieron correctamente los productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "401":
+          description: No tienes permisos para acceder a esta ruta
+        "500":
+          description: Se produjo un error en el servidor  
+  /api/products/{pid}:
+    get:
+      summary: Endpoint para obtener un producto por id
+      tags:
+        - Productos
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id del producto
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Se obtuvo correctamene el producto
+          content:
+            application/json:
+              schema:
+                  $ref: "#components/schemas/Product"
+        "401":
+          description: No tienes permisos para acceder a esta ruta
+        "500":
+          description: Se produjo un error en el servidor            
+    put:
+      summary: Endpoint para actualizar un producto
+      tags:
+        - Productos
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id del producto a actualizar
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateProduct"      
+      responses:
+        "200":
+          description: Se actualizo correctamene el producto
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                    message:
+                      type: string
+        "401":
+          description: No tienes permisos para acceder a esta ruta
+        "500":
+          description: Se produjo un error en el servidor    
+
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id del producto generado por mongoDB
+        name:
+          type: string
+          description: Nombre del producto
+        price:
+          type: number
+          description: Precio del producto
+        code:
+          type: string
+          description: Codigo del producto
+        category:
+          type: string
+          description: Categoria del producto
+        stock:
+          type: number
+          description: Stock disponible
+        owner:
+          type: ObjectId
+          description: Owner
+      example:
+        _id: 3456jk23l4j5234kj5
+        name: botella
+        price: 2000
+        code: 2112
+        category: Cosas
+        stock: 2
+        owner: 1234kj1234j
+  requestBodies:
+    UpdateProduct:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: Stock disponible
+      example:
+        name: botella
+        price: 2000
+        stock: 2

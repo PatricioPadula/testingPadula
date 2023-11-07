@@ -1,0 +1,61 @@
+paths:
+  /api/carts:
+    get:
+      summary: Endpoint para obtener todos los carritos
+      tags:
+        - Carritos
+      responses:
+        "200":
+          description: Se obtuvieron correctamente los carritos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "401":
+          description: No tienes permisos para acceder a esta ruta
+        "500":
+          description: Se produjo un error en el servidor
+  /api/carts/{pid}:
+    get:
+      summary: Endpoint para obtener un carrito por id
+      tags:
+        - Carritos
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Se obtuvo correctamene el carrito
+          content:
+            application/json:
+              schema:
+                  $ref: "#components/schemas/Cart"
+        "401":
+          description: No tienes permisos para acceder a esta ruta
+        "500":
+          description: Se produjo un error en el servidor  
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id del carrito generado por mongoDB
+        quantity:
+          type: number
+          description: cantidad de productos en el carrito
+        productId:
+          type: ObjectId
+          description: id del producto del carrito
+      example:
+        _id: 12341234kj21
+        quantity: 2
+        productId: 54325342234kjasfd213  
